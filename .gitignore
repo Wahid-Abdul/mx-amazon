@@ -1,0 +1,37 @@
+# Node.js dependencies
+/node_modules/
+
+# TypeScript compiled files
+/dist/
+/build/
+/out/
+
+# Optional: TypeScript declaration files
+/*.d.ts
+
+# VS Code settings (if using VS Code)
+.vscode/
+
+# npm logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# IDE or editor settings (e.g., WebStorm, Sublime, etc.)
+.idea/
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# dotenv environment variables file (you may want to keep .env.example)
+.env
+
+# Optional: Test coverage reports
+coverage/
+
+# Optional: TypeScript build cache
+*.tsbuildinfo
+
