@@ -3,7 +3,7 @@ import argv from "./helpers/args";
 import { AMAZON_URL, SELECTORS } from "./helpers/constants";
 import { RawText, SelectorsType } from "./models/types";
 
-const { username: USERNAME, password: PASSWORD } = argv;
+const { username: USERNAME, password: PASSWORD, count: COUNT } = argv;
 
 const scrapeAmazonOrders = async (): Promise<void> => {
 
@@ -32,7 +32,7 @@ const scrapeAmazonOrders = async (): Promise<void> => {
 
         await page.waitForSelector(SELECTORS.Classes.OrderBox);
 
-        const orders = await page.evaluate((_SELECTORS: SelectorsType) => {
+        const orders = await page.evaluate((_SELECTORS: SelectorsType, _COUNT: number) => {
 
             const processText = (rawText: RawText): string => {
                 if (!rawText) return "N/A";
@@ -43,7 +43,7 @@ const scrapeAmazonOrders = async (): Promise<void> => {
             const recentOrders: { title: string; date: string; price: string }[] = [];
 
             orderElements.forEach((order, index) => {
-                if (index < 10) {
+                if (index < _COUNT) {
                     const title = order.querySelector(_SELECTORS.Classes.ProductTitle)?.textContent ?? "";
 
                     const infoElements = order.querySelectorAll(_SELECTORS.Classes.ProductInfo) ?? [];
@@ -59,7 +59,7 @@ const scrapeAmazonOrders = async (): Promise<void> => {
                 }
             });
             return Promise.resolve(recentOrders)
-        }, SELECTORS)
+        }, SELECTORS, COUNT ?? 10)
 
 
         console.log("----", orders)
