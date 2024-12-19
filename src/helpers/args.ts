@@ -1,11 +1,12 @@
 // args.ts
-import yargs, { number } from "yargs";
+import yargs from "yargs";
 
 // Define the argument types
 export interface Argv {
     username: string;
     password: string;
     count: number;
+    search_string: string;
 }
 
 // Parse the command-line arguments using yargs
@@ -22,6 +23,10 @@ const argv = yargs
     }).option("count", {
         describe: "Number of products to list",
         type: "number",
+        demandOption: false
+    }).option("search_string", {
+        describe: "Search for a product",
+        type: "string",
         demandOption: false
     })
     .argv as Argv;  // Cast to our custom Argv type
