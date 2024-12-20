@@ -45,7 +45,7 @@ const searchBasedResults = async (page: Page) => {
                 recentOrders.push({
                     title: processText(title),
                     link: processText(`${_AMAZON_URL}${link}`),
-                    price: 'N/A',
+                    price: 'N/A', // Price not available when searched
                 });
             }
         });

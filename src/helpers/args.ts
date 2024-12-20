@@ -14,12 +14,12 @@ const argv = yargs
     .option("username", {
         describe: "Amazon username",
         type: "string",
-        demandOption: true,  // Make username a required argument
+        demandOption: true, // username mandatory
     })
     .option("password", {
         describe: "Amazon password",
         type: "string",
-        demandOption: true,  // Make password a required argument
+        demandOption: true, // password mandatory
     }).option("count", {
         describe: "Number of products to list",
         type: "number",

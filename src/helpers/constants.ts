@@ -17,8 +17,9 @@ export const SELECTORS = {
         Submit: "#signInSubmit",
         SearchInput: "#searchOrdersInput",
         SearchBtn: "#a-autoid-0",
+        AuthError: "#auth-error-message-box",
     },
     Tags: {
         Anchor: "a",
     },
-}
+} as const

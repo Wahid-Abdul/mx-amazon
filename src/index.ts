@@ -5,6 +5,11 @@ import argv from "./helpers/args";
 
 const { username: USERNAME, password: PASSWORD, count: COUNT, search_string: SEARCH_STRING } = argv;
 
+const browserClose = async (page: Page, browser: Browser) => {
+    await page.waitForNetworkIdle();
+    browser.close();
+}
+
 const scrapeAmazonOrders = async (): Promise<void> => {
 
     try {
@@ -17,17 +22,28 @@ const scrapeAmazonOrders = async (): Promise<void> => {
 
         // Log in
         console.log("Logging in...");
-        await page.type(SELECTORS.IDs.Email, USERNAME, { delay: 0 });
+        await page.type(SELECTORS.IDs.Email, USERNAME, { delay: 50 });
         await page.click(SELECTORS.IDs.ContinueBtn);
         console.log("Clicking continuee....");
 
-        await page.waitForSelector(SELECTORS.IDs.Password);
-        await page.type(SELECTORS.IDs.Password, PASSWORD, { delay: 0 });
+        
+
+        const firstLoad = await Promise.race([
+            page.waitForSelector(SELECTORS.IDs.AuthError).then(() => "Error"),
+            page.waitForSelector(SELECTORS.IDs.Password).then(() => "Password")
+        ])
+
+        if (firstLoad === "Error") {
+            console.log("Inavlid email ID....");
+            await browserClose(page, browser);
+            return;
+        }
+
+        await page.type(SELECTORS.IDs.Password, PASSWORD, { delay: 50 });
         await page.click(SELECTORS.IDs.Submit);
         console.log("Clicking password continuee....");
 
         await page.waitForNavigation();
-        console.log("orders loaded....");
 
         let orders = [];
         if (SEARCH_STRING) {
@@ -39,8 +55,7 @@ const scrapeAmazonOrders = async (): Promise<void> => {
 
         console.log("----result----", orders, orders.length)
 
-        await page.waitForNetworkIdle();
-        await browser.close();
+        await browserClose(page, browser);
     } catch (e) {
         console.log("Error >>>", e);
     }
